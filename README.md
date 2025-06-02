@@ -12,7 +12,7 @@
 
 ## 🎨 アイコン
 
-<img src="images/dx21_icon.png" alt="DX21 icon" width="64">
+<img src="images/dx21_icon.png" alt="DX21 icon" width="128">
 ---
 
 ## 🖼 スクリーンショット
