@@ -1,0 +1,447 @@
+﻿<Window x:Class="DmpToDx21.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DMP to DX21 Converter" Height="800" Width="980" MinWidth="640  " MinHeight="480">
+    <DockPanel>
+        <!-- ステータスバー（ウインドウ最下部に固定） -->
+        <StatusBar DockPanel.Dock="Bottom" Name="statusBar">
+            <StatusBarItem>
+                <TextBlock Name="txtStatus" Text="準備完了" />
+            </StatusBarItem>
+        </StatusBar>
+        <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+            
+            <!-- Row 0: 操作と音色設定 -->
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0,0,0,10">
+                <StackPanel Orientation="Vertical" Margin="0,0,10,0">
+                    <Button x:Name="btnLoadDmp" Content="DMPファイル読み込み" Width="150" Click="btnLoadDmp_Click"/>
+                    <CheckBox x:Name="checkMaximizeVolume" Content="音量最大化して読み込み" Margin="0,5,0,0" IsChecked="True"/>
+                </StackPanel>
+                <Button x:Name="btnSendSyx" Content="DX21へSysEx送信" Width="120" Margin="0,0,10,0" Click="btnSendSyx_Click"/>
+
+                <Button x:Name="btnConvert" Content="DX21(VCED)Sys保存" Width="120" Margin="0,0,10,0" Click="btnConvertVCED_Click"/>
+                <Button x:Name="btnSendSyxFile" Content="SysExファイル送信" Width="120" Margin="0,0,10,0" Click="btnSendSyxFile_Click"/>
+            <Label Content="MIDI CH:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+            <ComboBox x:Name="comboMidiOut" Width="200" Margin="0,0,10,0" VerticalAlignment="Center"/>
+        </StackPanel>
+
+        <!-- Row 1: 音色データ + パフォーマンス設定 -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" Margin="0,0,0,10">
+              
+            <GroupBox Header="音色データ" Margin="0,0,0,10">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                    <!-- 左列 -->
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="音色名 (10文字):" Width="120" VerticalAlignment="Center"/>
+                            <TextBox x:Name="txtVoiceName" Width="100" MaxLength="10"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="オクターブシフト:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboOctaveShift" Width="60" SelectedIndex="3">
+                                <ComboBoxItem Content="-3"/>
+                                <ComboBoxItem Content="-2"/>
+                                <ComboBoxItem Content="-1"/>
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="+1"/>
+                                <ComboBoxItem Content="+2"/>
+                                <ComboBoxItem Content="+3"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="LFO Waveform:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboLfoWave" Width="100">
+                                <ComboBoxItem Content="TRIANGLE" Tag="0" IsSelected="True"/>
+                                <ComboBoxItem Content="SAW UP" Tag="1"/>
+                                <ComboBoxItem Content="SQUARE" Tag="2"/>
+                                <ComboBoxItem Content="S/HOLD" Tag="3"/>
+                            </ComboBox>
+                        </StackPanel>
+
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="LFO Sync:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboLfoSync" Width="60">
+                                <ComboBoxItem Content="ON" Tag="0" IsSelected="True"/>
+                                <ComboBoxItem Content="OFF" Tag="1"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 中列 -->
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="LFO Speed:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboLfoSpeed" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20"/>
+                                    <ComboBoxItem Content="30" IsSelected="True"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="LFO Delay:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboLfoDelay" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="10"/>
+                                    <ComboBoxItem Content="20" IsSelected="True"/>
+                                <ComboBoxItem Content="30"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="LFO PMD (Pitch):" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPMD" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20"/>
+                                <ComboBoxItem Content="30" IsSelected="True"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="LFO AMD (Amp):" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboAMD" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20"/>
+                                <ComboBoxItem Content="30"/>
+                                <ComboBoxItem Content="40" IsSelected="True"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 右列 -->
+                    <StackPanel Grid.Column="2" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Pitch Mod Sens:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPitchModSens" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0" IsSelected="True"/>
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="6"/>
+                                <ComboBoxItem Content="7"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Amp Mod Sens:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboAmpModSens" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0" IsSelected="True"/>
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="6"/>
+                                <ComboBoxItem Content="7"/>
+                            </ComboBox>
+                            </StackPanel>
+                        </StackPanel>
+                </Grid>
+            </GroupBox>
+
+            <!-- パフォーマンス設定 -->
+            <GroupBox Header="パフォーマンス設定">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 左列 -->
+                    <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0,0,10,0">
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="発音モード:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPolyMode" Width="60">
+                                <ComboBoxItem Content="POLY" IsSelected="True"/>
+                                <ComboBoxItem Content="MONO"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Pitch Bend Range:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPitchBendRange" Width="60">
+                                <ComboBoxItem Content="1"/>
+                                <ComboBoxItem Content="2" IsSelected="True"/>
+                                <ComboBoxItem Content="3"/>
+                                <ComboBoxItem Content="4"/>
+                                <ComboBoxItem Content="5"/>
+                                <ComboBoxItem Content="12"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Transpose:" Width="120" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="comboTranspose" Width="60">
+                                    <ComboBoxItem Content="C5" Tag="48"/>
+                                    <ComboBoxItem Content="B4" Tag="47"/>
+                                    <ComboBoxItem Content="A#4" Tag="46"/>
+                                    <ComboBoxItem Content="A4" Tag="45"/>
+                                    <ComboBoxItem Content="G#4" Tag="44"/>
+                                    <ComboBoxItem Content="G4" Tag="43"/>
+                                    <ComboBoxItem Content="F#4" Tag="42"/>
+                                    <ComboBoxItem Content="F4" Tag="41"/>
+                                    <ComboBoxItem Content="E4" Tag="40"/>
+                                    <ComboBoxItem Content="D#4" Tag="39"/>
+                                    <ComboBoxItem Content="D4" Tag="38"/>
+                                    <ComboBoxItem Content="C#4" Tag="37"/>
+                                    <ComboBoxItem Content="C4" Tag="36"/>
+
+                                    <ComboBoxItem Content="B3" Tag="35"/>
+                                    <ComboBoxItem Content="A#3" Tag="34"/>
+                                    <ComboBoxItem Content="A3" Tag="33"/>
+                                    <ComboBoxItem Content="G#3" Tag="32"/>
+                                    <ComboBoxItem Content="G3" Tag="31"/>
+                                    <ComboBoxItem Content="F#3" Tag="30"/>
+                                    <ComboBoxItem Content="F3" Tag="29"/>
+                                    <ComboBoxItem Content="E3" Tag="28"/>
+                                    <ComboBoxItem Content="D#3" Tag="27"/>
+                                    <ComboBoxItem Content="D3" Tag="26"/>
+                                    <ComboBoxItem Content="C#3" Tag="25"/>
+                                    <ComboBoxItem Content="C3" Tag="24" IsSelected="True"/>
+
+                                    <ComboBoxItem Content="B2" Tag="23"/>
+                                    <ComboBoxItem Content="A#2" Tag="22"/>
+                                    <ComboBoxItem Content="A2" Tag="21"/>
+                                    <ComboBoxItem Content="G#2" Tag="20"/>
+                                    <ComboBoxItem Content="G2" Tag="19"/>
+                                    <ComboBoxItem Content="F#2" Tag="18"/>
+                                    <ComboBoxItem Content="F2" Tag="17"/>
+                                    <ComboBoxItem Content="E2" Tag="16"/>
+                                    <ComboBoxItem Content="D#2" Tag="15"/>
+                                    <ComboBoxItem Content="D2" Tag="14"/>
+                                    <ComboBoxItem Content="C#2" Tag="13"/>
+                                    <ComboBoxItem Content="C2" Tag="12"/>
+
+                                    <ComboBoxItem Content="B1" Tag="11"/>
+                                    <ComboBoxItem Content="A#1" Tag="10"/>
+                                    <ComboBoxItem Content="A1" Tag="9"/>
+                                    <ComboBoxItem Content="G#1" Tag="8"/>
+                                    <ComboBoxItem Content="G1" Tag="7"/>
+                                    <ComboBoxItem Content="F#1" Tag="6"/>
+                                    <ComboBoxItem Content="F1" Tag="5"/>
+                                    <ComboBoxItem Content="E1" Tag="4"/>
+                                    <ComboBoxItem Content="D#1" Tag="3"/>
+                                    <ComboBoxItem Content="D1" Tag="2"/>
+                                    <ComboBoxItem Content="C#1" Tag="1"/>
+                                    <ComboBoxItem Content="C1" Tag="0"/>
+                                </ComboBox>
+
+                            </StackPanel>
+
+                        </StackPanel>
+
+                    <!-- 右列 -->
+                    <StackPanel Grid.Column="1" Orientation="Vertical">
+                            <!-- サステインペダル有効（ComboBox版） -->
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <TextBlock Text="Sustain Pedal:" Width="120" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="comboSustain" Width="60">
+                                    <ComboBoxItem Content="OFF" Tag="0"/>
+                                    <ComboBoxItem Content="ON" Tag="1" IsSelected="True"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- コーラス有効（ComboBox版） -->
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <TextBlock Text="Chorus Enable:" Width="120" VerticalAlignment="Center"/>
+                                <ComboBox x:Name="comboChorus" Width="60">
+                                    <ComboBoxItem Content="OFF" Tag="0" IsSelected="True"/>
+                                    <ComboBoxItem Content="ON" Tag="1"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Portament Mode:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPortaMode" Width="60">
+                                <ComboBoxItem Content="OFF" Tag="0" IsSelected="True"/>
+                                <ComboBoxItem Content="ON" Tag="1"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,5">
+                            <TextBlock Text="Portament Time:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPortaTime" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0"/>
+                                    <ComboBoxItem Content="20" IsSelected="True"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- 右列 -->
+                    <StackPanel Grid.Column="2" Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="MW Pitch Mod Range:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboWheelPitch" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0" IsSelected="True"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20"/>
+                                <ComboBoxItem Content="30"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="MW Amp Mod Range:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboWheelAmp" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0" IsSelected="True"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20"/>
+                                <ComboBoxItem Content="30"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+                        <!-- Foot Volume -->
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Foot Volume:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboFootVolume" Width="60" IsEditable="True">
+                                <ComboBoxItem Content="0" IsSelected="True"/>
+                                <ComboBoxItem Content="10"/>
+                                <ComboBoxItem Content="20"/>
+                                <ComboBoxItem Content="30"/>
+                                <ComboBoxItem Content="40"/>
+                                <ComboBoxItem Content="50"/>
+                                <ComboBoxItem Content="60"/>
+                                <ComboBoxItem Content="70"/>
+                                <ComboBoxItem Content="80"/>
+                                <ComboBoxItem Content="90"/>
+                                <ComboBoxItem Content="99"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <!-- Porta Foot Switch -->
+                        <StackPanel Orientation="Horizontal" Margin="0,2">
+                            <TextBlock Text="Porta Foot Switch:" Width="120" VerticalAlignment="Center"/>
+                            <ComboBox x:Name="comboPortaFootSwitch" Width="60">
+                                <ComboBoxItem Content="OFF" Tag="0"/>
+                                    <ComboBoxItem Content="ON" Tag="1" IsSelected="True"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </StackPanel>
+
+        <!-- Row 2: 入力テキストエリア -->
+            <Grid Grid.Row="2" Margin="0,0,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="540" />
+                </Grid.ColumnDefinitions>
+
+                <!-- 左側：DMP内容 と DX21変換後 -->
+                <Grid Grid.Column="0" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="DMP内容" Grid.Row="0" Margin="0,0,0,5">
+                        <TextBox x:Name="txtInput"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 IsReadOnly="True"
+                 FontFamily="Consolas"
+                 FontSize="12"/>
+                    </GroupBox>
+
+                    <GroupBox Header="DX21変換後" Grid.Row="1">
+                        <TextBox x:Name="txtOutput"
+                 VerticalScrollBarVisibility="Auto"
+                 HorizontalScrollBarVisibility="Auto"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 IsReadOnly="True"
+                 FontFamily="Consolas"
+                 FontSize="12"/>
+                    </GroupBox>
+                </Grid>
+
+                <!-- 右側：SysEx バイナリ -->
+                <GroupBox Header="SysEx バイナリ" Grid.Column="1">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <TextBox x:Name="txtBinaryEditor"
+                     AcceptsReturn="True"
+                     IsReadOnly="True"
+                     FontFamily="Consolas"
+                     FontSize="12"
+                     TextWrapping="NoWrap"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"
+                     SpellCheck.IsEnabled="False" />
+                    </ScrollViewer>
+                </GroupBox>
+            </Grid>
+
+
+            <!-- Row 4: 閉じるボタン（右下配置） -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,0">
+            <Button x:Name="btnEnd" Content="閉じる" Width="100" Click="btnEnd_Click"/>
+        </StackPanel>
+
+    </Grid>
+    </DockPanel>
+</Window>
