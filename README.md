@@ -79,5 +79,4 @@
 
 Hideki Konishi  
 GitHub: [https://github.com/Hidecade](https://github.com/Hidecade)  
-ご質問・ご要望は [Issues](https://github.com/Hidecade/DmpToDx21/issues) にてお知らせください。
 
