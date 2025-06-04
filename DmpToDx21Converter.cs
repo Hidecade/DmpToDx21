@@ -10,8 +10,8 @@ namespace KeyboardSamplerWPF
 {
     public class DmpToDx21ConverterStrict
     {
-        private Voice voice = new();
-        private Dx21FunctionParams functionParams = new();
+        private readonly Voice voice = new();
+        private readonly Dx21FunctionParams functionParams = new();
 
         private byte[] vced = { 0 };
 
@@ -143,7 +143,7 @@ namespace KeyboardSamplerWPF
             vced[58] = (byte)(voice.LfoSync != 0 ? 1 : 0);                    // LFO Sync: 0 or 1
             vced[59] = (byte)Math.Clamp((int)voice.LfoWaveform, 0, 3);       // LFO Waveform: 0〜3
             vced[60] = (byte)Math.Clamp((int)voice.PMS, 0, 7);               // Pitch Mod Sensitivity: 0〜7
-            vced[61] = (byte)Math.Clamp((int)voice.AMS, 0, 7);               // Amp Mod Sensitivity: 0〜7
+            vced[61] = (byte)Math.Clamp((int)voice.AMS, 0, 3);               // Amp Mod Sensitivity: 0〜3
 
             // パフォーマンス
             vced[62] = (byte)Math.Clamp((int)functionParams.Transpose, 0, 48);              // VCED[62]：トランスポーズ（0=C1 ～ 48=C5）
@@ -189,17 +189,21 @@ namespace KeyboardSamplerWPF
         public void SetVoiceCommonParams(
             int lfoSpeed,
             int lfoDelay,
-            int pitchModDepth,
-            int ampModDepth,
+            int pitchModSens,
+            int ampModSens,
             int lfoSync,
-            int lfoWaveforms)
+            int lfoWaveforms,
+            int pms,
+            int ams)
         {
             voice.LfoSpeed = (byte)Math.Clamp(lfoSpeed, 0, 99);
             voice.LfoDelay = (byte)Math.Clamp(lfoDelay, 0, 99);
-            voice.PitchModDepth = (byte)Math.Clamp(pitchModDepth, 0, 99);
-            voice.AmpModDepth = (byte)Math.Clamp(ampModDepth, 0, 99);
+            voice.PitchModDepth = (byte)Math.Clamp(pitchModSens, 0, 99);
+            voice.AmpModDepth = (byte)Math.Clamp(ampModSens, 0, 99);
             voice.LfoSync = (byte)(lfoSync != 0 ? 1 : 0);               // ON/OFF
             voice.LfoWaveform = (byte)Math.Clamp(lfoWaveforms, 0, 3);    // 0=Triangle, 1=SawUp, 2=Square, 3=Sample/Hold
+            voice.PMS = (byte)Math.Clamp(pms, 0, 7);
+            voice.AMS = (byte)Math.Clamp(ams, 0, 3);
         }
 
 
@@ -534,7 +538,7 @@ namespace KeyboardSamplerWPF
         public byte Feedback { get; set; }
         public byte LfoSpeed { get; set; }          // VCED[54] LFO Speed
         public byte LfoDelay { get; set; }          // VCED[55] LFO Delay
-        public byte PitchModDepth { get; set; }     // VCED[56] Pitch Mod Depth
+        public byte PitchModDepth{ get; set; }     // VCED[56] Pitch Mod Depth
         public byte AmpModDepth { get; set; }       // VCED[57] Amp Mod Depth
         public byte LfoSync { get; set; }           // VCED[58] LFO Sync
         public byte LfoWaveform { get; set; }       // VCED[59] LFO Waveform

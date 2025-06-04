@@ -86,12 +86,14 @@ namespace DmpToDx21
 
                 // VCED[54]～[59] に相当する LFO・モジュレーション関連パラメータを voice に設定
                 converter.SetVoiceCommonParams(
-                    GetComboValue(comboLfoSpeed),            // VCED[54]：LFO Speed（0〜99）
-                    GetComboValue(comboLfoDelay),            // VCED[55]：LFO Delay（0〜99）
-                    GetComboValue(comboPMD),                 // VCED[56]：Pitch Mod Depth（ピッチ変調の深さ）
-                    GetComboValue(comboAMD),                 // VCED[57]：Amp Mod Depth（音量変調の深さ）
-                    GetComboTagValue(comboLfoSync),          // VCED[58]：LFO Sync（0=ON, 1=OFF）
-                    GetComboTagValue(comboLfoWave)           // VCED[59]：LFO Waveform（0=Triangle, 1=SawUp, 2=Square, 3=S/H）
+                    GetComboValue(comboLfoSpeed),           // VCED[54]：LFO Speed（0〜99）
+                    GetComboValue(comboLfoDelay),           // VCED[55]：LFO Delay（0〜99）
+                    GetComboValue(comboPMD),                // VCED[56]：Pitch Mod Depth（ピッチ変調の深さ）
+                    GetComboValue(comboAMD),                // VCED[57]：Amp Mod Depth（音量変調の深さ）
+                    GetComboTagValue(comboLfoSync),         // VCED[58]：LFO Sync（0=ON, 1=OFF）
+                    GetComboTagValue(comboLfoWave),         // VCED[59]：LFO Waveform（0=Triangle, 1=SawUp, 2=Square, 3=S/H）
+                    GetComboValue(comboPitchModSens),       // VCED[56]：Pitch Mod Depth（ピッチ変調の深さ）
+                    GetComboValue(comboAmpModSens)          // VCED[57]：Amp Mod Depth（音量変調の深さ）
                 );
 
                 // VCED[62]～[72] に相当するパフォーマンスパラメータを functionParams に設定
@@ -99,8 +101,8 @@ namespace DmpToDx21
                     GetComboTagValue(comboTranspose, 24),         // VCED[62]：Transpose（0=C1 ～ 48=C5）
                     comboPolyMode.SelectedIndex == 1 ? 1 : 0,     // VCED[63]：Play Mode（0=POLY, 1=MONO）
                     GetComboValue(comboPitchBendRange),           // VCED[64]：Pitch Bend Range（0～12）
-                    GetComboTagValue(comboSustain),                 // VCED[68]：Sustain Pedal（0=OFF, 1=ON）
-                    GetComboTagValue(comboChorus),                  // VCED[70]：Chorus Enable（0=OFF, 1=ON）
+                    GetComboTagValue(comboSustain),               // VCED[68]：Sustain Pedal（0=OFF, 1=ON）
+                    GetComboTagValue(comboChorus),                // VCED[70]：Chorus Enable（0=OFF, 1=ON）
                     GetComboTagValue(comboPortaMode),             // VCED[65]：Portamento Mode（0=OFF, 1=ON）
                     GetComboValue(comboPortaTime),                // VCED[66]：Portamento Time（0～99）
                     GetComboValue(comboWheelPitch),               // VCED[71]：MW Pitch Mod Range（0～99）
@@ -159,7 +161,9 @@ namespace DmpToDx21
                     GetComboValue(comboPMD),
                     GetComboValue(comboAMD),
                     GetComboTagValue(comboLfoSync),
-                    GetComboTagValue(comboLfoWave)
+                    GetComboTagValue(comboLfoWave),
+                    GetComboValue(comboPitchModSens),
+                    GetComboValue(comboAmpModSens)
                 );
 
                 // パフォーマンスパラメータ設定
