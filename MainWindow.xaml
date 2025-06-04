@@ -165,7 +165,7 @@
                                 <ComboBoxItem Content="3" IsSelected="True"/>
                                 <ComboBoxItem Content="4"/>
                                 <ComboBoxItem Content="5"/>
-                                <ComboBoxItem Content="6" IsSelected="True"/>
+                                <ComboBoxItem Content="6"/>
                                 <ComboBoxItem Content="7"/>
                             </ComboBox>
                         </StackPanel>
