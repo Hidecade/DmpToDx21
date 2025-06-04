@@ -302,8 +302,8 @@
                         <StackPanel Orientation="Horizontal" Margin="0,5">
                             <TextBlock Text="Portament Time:" Width="120" VerticalAlignment="Center"/>
                             <ComboBox x:Name="comboPortaTime" Width="60" IsEditable="True">
-                                <ComboBoxItem Content="0"/>
-                                    <ComboBoxItem Content="20" IsSelected="True"/>
+                                <ComboBoxItem Content="0" IsSelected="True"/>
+                                <ComboBoxItem Content="20"/>
                                 <ComboBoxItem Content="40"/>
                                 <ComboBoxItem Content="60"/>
                                 <ComboBoxItem Content="80"/>
