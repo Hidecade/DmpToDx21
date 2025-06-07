@@ -245,12 +245,12 @@ namespace KeyboardSamplerWPF
 
 
         // YM2612のTL値（0 = 最大音量, 127 = 無音）を、DX21のOutput Level（0 = 無音, 99 = 最大音量）に変換する
-        private byte ConvertYM2612TLtoDx21Output(byte tl)
+        private static byte ConvertYM2612TLtoDx21Output(byte tl)
         {
             return (byte)Math.Clamp(99 - (tl * 99 / 127), 0, 99);
         }
 
-        private byte ConvertYM2612TLtoDx21OutputFix(byte tl)
+        private static byte ConvertYM2612TLtoDx21OutputFix(byte tl)
         {
             // 99を上限とし、それを基準に反転（DX21の最大値 99 → 無音、0 → 最大音量）
             int clamped = Math.Min((int)tl, 99);
@@ -259,7 +259,7 @@ namespace KeyboardSamplerWPF
 
 
         // Freq Ratio → Freq値を近似検索（変換表に基づく）
-        byte LookupFreqIndex(double ratio)
+        private static byte LookupFreqIndex(double ratio)
         {
             double[] freqRatios = new double[]
             {
@@ -288,7 +288,7 @@ namespace KeyboardSamplerWPF
         }
 
         // YM2151 → DX21 マルチプル変換
-        float GetFrequencyRatio(byte mul, byte dt2)
+        private static float GetFrequencyRatio(byte mul, byte dt2)
         {
             float[] dt2Table = { 1.00f, 1.41f, 1.57f, 1.73f };
             if (dt2 > 3) dt2 = 0;
@@ -297,7 +297,7 @@ namespace KeyboardSamplerWPF
         }
 
         // YM2151 → DX21 ConvertDetune
-        byte ConvertDetune(byte dt)
+        private static byte ConvertDetune(byte dt)
         {
             return dt switch
             {
@@ -313,7 +313,7 @@ namespace KeyboardSamplerWPF
         }
 
 
-        byte GetDX21Freq(byte mul, byte dt2)
+        private static byte GetDX21Freq(byte mul, byte dt2)
         {
             float ratio = GetFrequencyRatio(mul, dt2);
             return LookupFreqIndex(ratio);
@@ -344,7 +344,7 @@ namespace KeyboardSamplerWPF
         }
 
 
-        private void ApproximateMulDt2FromFreqRatio(float ratio, out byte mul, out byte dt2)
+        private static void ApproximateMulDt2FromFreqRatio(float ratio, out byte mul, out byte dt2)
         {
             // 候補表
             float[] dt2Table = { 1.00f, 1.41f, 1.57f, 1.73f };
@@ -373,7 +373,7 @@ namespace KeyboardSamplerWPF
         }
 
         // / チェックサム計算
-        private byte CalculateChecksum(byte[] vced)
+        private static byte CalculateChecksum(byte[] vced)
         {
             int sum = 0;
             for (int i = 0; i < vced.Length; i++)
