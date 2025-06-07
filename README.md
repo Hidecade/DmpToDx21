@@ -16,11 +16,11 @@
 <img src="images/DMP%20to%20DX21%20Converter%202025_06_02%2020_09_57.png" alt="DMP to DX21 Converter UI" width="600">
 ---
 
-## 📦 機能概要
-
-- トラッカーDeflemaskの`.dmp` ファイルからFM音色を抽出
+##📦 機能概要（改善案）
+トラッカー「Deflemask」の .dmp ファイルから FM音色を抽出
 - YM2612 / YM2151 / YM2203 に対応
-- DX21形式（93バイトVCED）のSysExファイルを出力（USB MIDIケーブルで直接PCからDX21へ転送できます）
+- Yamaha DX21 形式（93バイトの VCED SysEx） で出力
+- USB MIDIケーブル経由で、PCからDX21へ直接転送可能
 ---
 
 ## 🛠 使用方法（GUI）
