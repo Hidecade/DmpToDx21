@@ -17,7 +17,7 @@
 ---
 
 ## 📦 機能概要（改善案）
-トラッカー「Deflemask」の .dmp ファイルから FM音色を抽出
+- トラッカー「Deflemask」の .dmp ファイルから FM音色を抽出
 - YM2612 / YM2151 / YM2203 に対応
 - Yamaha DX21 形式（93バイトの VCED SysEx） で出力
 - USB MIDIケーブル経由で、PCからDX21へ直接転送可能
