@@ -124,7 +124,7 @@ namespace KeyboardSamplerWPF
                 vced[baseIndex + 3] = op.RR;
                 vced[baseIndex + 4] = (byte)(15 - op.SL); // YM2612 → DX21 に変換                 
                 vced[baseIndex + 5] = 0; // Level Scaling (not present in DMP)
-                vced[baseIndex + 6] = (voice.SystemCode == 0x02) ? op.RS : (byte)0; // YM2612のみ使用
+                vced[baseIndex + 6] = op.RS; // fix ver1.01
                 vced[baseIndex + 7] = 0; // EG Bias Sensitivity (not used)
                 vced[baseIndex + 8] = op.AM; // Amplitude Mod Sensitivity (0 or 1)
                 vced[baseIndex + 9] = 0; // Key Velocity Sensitivity (not used)
@@ -308,7 +308,7 @@ namespace KeyboardSamplerWPF
                 4 => 4,  // 1 => -1
                 5 => 5,  // 2 => -2
                 6 => 6,  // 3 => -3
-                _ => 0,  // 念のため（範囲外安全策）
+                _ => 0,  // 念のため（範囲外安全策）fix
             };
         }
 
